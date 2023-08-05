@@ -3,11 +3,11 @@
 #include<vector>
 using namespace std;
 
-std::vector<int> initialize(std::vector<int> a);
-void display(std::vector<int> a);
-std::vector<int> insert_element(std::vector<int> a);
-std::vector<int> delete_element(std::vector<int> a);
-void search(std::vector<int> a);
+void initialize(std::vector<int> &a);
+void display(std::vector<int> &a);
+void insert_element(std::vector<int> &a);
+void delete_element(std::vector<int> &a);
+void search(std::vector<int> &a);
 
 int main(){
     int n,c;
@@ -21,17 +21,17 @@ int main(){
         cin>>c;
         switch(c){
             case 1:
-            a=initialize(a);
+            initialize(a);
             break;
 
             case 2:
-            a=insert_element(a);
+            insert_element(a);
             cout<<"\nARRAY MODIFIED\n";
             display(a);
             break;
 
             case 3:
-            a=delete_element(a);
+            delete_element(a);
             cout<<"\nARRAY MODIFIED\n";
             display(a);
             break;
@@ -51,14 +51,15 @@ int main(){
     }
     return 0;
 }
-std::vector<int> initialize(std::vector<int> a){
+
+void initialize(std::vector<int> &a){
     cout<<"\nenter array data:-\n";
     for(int i=0;i<a.size();i++){
         cin>>a[i];
     }
-    return a;
 }
-void display(std::vector<int> a){
+
+void display(std::vector<int> &a){
     cout<<"\narray data:-\n";
     for(int i=0;i<a.size();i++){
     cout<<a[i]<<" ";
@@ -66,7 +67,8 @@ void display(std::vector<int> a){
     cout<<"\n";
     getch();
 }
-std::vector<int> insert_element(std::vector<int> a){
+
+void insert_element(std::vector<int> &a){
     int i,v;
     display(a);
     input:
@@ -79,9 +81,9 @@ std::vector<int> insert_element(std::vector<int> a){
     cout<<"value=";
     cin>>v;
     a.insert(a.begin()+i,v);
-    return a;
 }
-std::vector<int> delete_element(std::vector<int> a){
+
+void delete_element(std::vector<int> &a){
     int i;
     display(a);
     input:
@@ -92,9 +94,9 @@ std::vector<int> delete_element(std::vector<int> a){
         goto input;
     }
     a.erase(a.begin()+i);
-    return a;
 }
-void search(std::vector<int> a){
+
+void search(std::vector<int> &a){
     int v,count=0;
     cout<<"value=";
     cin>>v;
