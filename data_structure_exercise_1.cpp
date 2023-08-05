@@ -2,10 +2,13 @@
 #include<conio.h>
 #include<vector>
 using namespace std;
+
 std::vector<int> initialize(std::vector<int> a);
 void display(std::vector<int> a);
 std::vector<int> insert_element(std::vector<int> a);
 std::vector<int> delete_element(std::vector<int> a);
+void search(std::vector<int> a);
+
 int main(){
     int n,c;
     bool running=1;
@@ -14,7 +17,7 @@ int main(){
     std::vector<int> a(n);
     while(running){
         cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-        cout<<"\t\tchoose one of the following options\n1.initialize\n2.insert\n3.delete\n4.display\n5.exit\nchoice:-"; 
+        cout<<"\t\tchoose one of the following options\n1.initialize\n2.insert\n3.delete\n4.display\n5.search\n6.exit\nchoice:-"; 
         cin>>c;
         switch(c){
             case 1:
@@ -38,6 +41,10 @@ int main(){
             break;
 
             case 5:
+            search(a);
+            break;
+
+            case 6:
             running=0;
             break;
         }
@@ -86,4 +93,21 @@ std::vector<int> delete_element(std::vector<int> a){
     }
     a.erase(a.begin()+i);
     return a;
+}
+void search(std::vector<int> a){
+    int v,count=0;
+    cout<<"value=";
+    cin>>v;
+    for(int i=0;i<a.size();i++){
+        if(a[i]==v){
+            count += 1;
+        }
+    }
+    if(count>0){
+        cout<<"\nvalue "<<v<<" found "<<count<<" times in the array\n";
+    }
+    else{
+        cout<<"\nvalue "<<v<<" not found in array\n";
+    }
+    getch();
 }
