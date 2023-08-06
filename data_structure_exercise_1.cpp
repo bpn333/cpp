@@ -1,8 +1,10 @@
 #include<iostream>
 #include<conio.h>
 #include<vector>
+#include <algorithm>
 using namespace std;
 
+//function declarations
 void initialize(std::vector<int> &a);
 void display(std::vector<int> &a);
 void insert_element(std::vector<int> &a);
@@ -16,7 +18,6 @@ int main(){
     cin>>n;
     std::vector<int> a(n);
     while(running){
-        cout<<"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
         cout<<"\t\tchoose one of the following options\n1.initialize\n2.insert\n3.delete\n4.display\n5.search\n6.exit\nchoice:-"; 
         cin>>c;
         switch(c){
@@ -61,8 +62,8 @@ void initialize(std::vector<int> &a){
 
 void display(std::vector<int> &a){
     cout<<"\narray data:-\n";
-    for(int i=0;i<a.size();i++){
-    cout<<a[i]<<" ";
+    for(auto i : a){
+    cout<<i<<" ";
     }
     cout<<"\n";
     getch();
@@ -100,16 +101,12 @@ void search(std::vector<int> &a){
     int v,count=0;
     cout<<"value=";
     cin>>v;
-    for(int i=0;i<a.size();i++){
-        if(a[i]==v){
-            count += 1;
-        }
-    }
-    if(count>0){
-        cout<<"\nvalue "<<v<<" found "<<count<<" times in the array\n";
-    }
+    auto it = std::find(a.begin(), a.end(), v);
+    if (it != a.end()){
+        std::cout << "\nElement found at index: " << std::distance(a.begin(), it) << std::endl;
+    } 
     else{
-        cout<<"\nvalue "<<v<<" not found in array\n";
+        std::cout << "\nElement not found" << std::endl;
     }
     getch();
 }
