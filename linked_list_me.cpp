@@ -9,7 +9,7 @@ int main(){
     link n[5];
     //input
     for(i=0;i<5;i++){
-        std::cin>>n[i].value;
+        std::std::cin>>n[i].value;
         n[i-1].pointer=&n[i].value;
     }
     //print

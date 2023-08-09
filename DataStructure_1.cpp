@@ -13,11 +13,11 @@ int sum_digit(int n){
 int main(){
     int n,i,total=0,new_total=0;
     std::cout<<"enter no of data :-";
-    std::cin>>n;
+    std::std::cin>>n;
     std::vector<int> arr(n),arr2(n);
     for(i=0;i<n;i++){
         std::cout<<"enter value of "<<(char)('a'+i)<<"= ";
-        std::cin>>arr[i];
+        std::std::cin>>arr[i];
     }
     std::cout<<std::endl;
     for ( i = 0; i < n; i++)

@@ -15,11 +15,11 @@ int main(){
     int n,c;
     bool running=1;
     cout<<"number of members:-";
-    cin>>n;
+    std::cin>>n;
     std::vector<int> a(n);
     while(running){
         cout<<"\t\tchoose one of the following options\n1.initialize\n2.insert\n3.delete\n4.display\n5.search\n6.exit\nchoice:-"; 
-        cin>>c;
+        std::cin>>c;
         switch(c){
             case 1:
             initialize(a);
@@ -56,7 +56,7 @@ int main(){
 void initialize(std::vector<int> &a){
     cout<<"\nenter array data:-\n";
     for(int i=0;i<a.size();i++){
-        cin>>a[i];
+        std::cin>>a[i];
     }
 }
 
@@ -74,13 +74,13 @@ void insert_element(std::vector<int> &a){
     display(a);
     input:
     cout<<"\nenter index :-";
-    cin>>i;
+    std::cin>>i;
     if(i<0 || i>a.size()){
         cout<<"ERROR OUT OF RANGE";
         goto input;
     }
     cout<<"value=";
-    cin>>v;
+    std::cin>>v;
     a.insert(a.begin()+i,v);
 }
 
@@ -89,7 +89,7 @@ void delete_element(std::vector<int> &a){
     display(a);
     input:
     cout<<"\nenter index :-";
-    cin>>i;
+    std::cin>>i;
     if(i<0 || i>=a.size()){
         cout<<"ERROR OUT OF RANGE";
         goto input;
@@ -100,7 +100,7 @@ void delete_element(std::vector<int> &a){
 void search(std::vector<int> &a){
     int v,count=0;
     cout<<"value=";
-    cin>>v;
+    std::cin>>v;
     auto it = std::find(a.begin(), a.end(), v);
     if (it != a.end()){
         std::cout << "\nElement found at index: " << std::distance(a.begin(), it) << std::endl;
