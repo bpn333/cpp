@@ -101,7 +101,7 @@ void delete_element(vector<int> &vec){
 }
 
 void search(vector<int> &vec){
-    int v,count=0;
+    int v;
     cout<<"value=";
     cin>>v;
     auto it = find(vec.begin(), vec.end(), v);
