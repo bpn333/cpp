@@ -12,12 +12,12 @@ void search(vector<int> &vec);
 
 int main(){
     int n,c;
-    bool running=true;
     cout<<"number of members:-";
     cin>>n;
     vector<int> vec(n);
     initialize(vec);
-    while(running){
+    bool run=true;
+    do {
         cout<<"\t\tchoose one of the following options\n";
         cout<<"1.insert\n";
         cout<<"2.delete\n";
@@ -50,10 +50,10 @@ int main(){
             break;
 
             case 5:
-            running=false;
+            run=false;
             break;
         }
-    }
+    }while(run);
     return 0;
 }
 
