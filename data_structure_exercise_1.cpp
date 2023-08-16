@@ -4,109 +4,111 @@
 #include <algorithm>
 using namespace std;
 
-//function declarations
-void initialize(std::vector<int> &a);
-void display(std::vector<int> &a);
-void insert_element(std::vector<int> &a);
-void delete_element(std::vector<int> &a);
-void search(std::vector<int> &a);
+void initialize(vector<int> &vec);
+void display(vector<int> &vec);
+void insert_element(vector<int> &vec);
+void delete_element(vector<int> &vec);
+void search(vector<int> &vec);
 
 int main(){
     int n,c;
-    bool running=1;
+    bool running=true;
     cout<<"number of members:-";
-    std::cin>>n;
-    std::vector<int> a(n);
+    cin>>n;
+    vector<int> vec(n);
+    initialize(vec);
     while(running){
-        cout<<"\t\tchoose one of the following options\n1.initialize\n2.insert\n3.delete\n4.display\n5.search\n6.exit\nchoice:-"; 
-        std::cin>>c;
+        cout<<"\t\tchoose one of the following options\n";
+        cout<<"1.insert\n";
+        cout<<"2.delete\n";
+        cout<<"3.display\n";
+        cout<<"4.search\n";
+        cout<<"5.exit\n";
+        cout<<"choice:-"; 
+        cin>>c;
         switch(c){
             case 1:
-            initialize(a);
+            insert_element(vec);
+            cout<<"\nARRAY MODIFIED\n";
+            display(vec);
             break;
 
             case 2:
-            insert_element(a);
+            delete_element(vec);
             cout<<"\nARRAY MODIFIED\n";
-            display(a);
+            display(vec);
             break;
 
             case 3:
-            delete_element(a);
-            cout<<"\nARRAY MODIFIED\n";
-            display(a);
+            display(vec);
+            getch();
             break;
 
             case 4:
-            display(a);
+            search(vec);
+            getch();
             break;
 
             case 5:
-            search(a);
-            break;
-
-            case 6:
-            running=0;
+            running=false;
             break;
         }
     }
     return 0;
 }
 
-void initialize(std::vector<int> &a){
+void initialize(vector<int> &vec){
     cout<<"\nenter array data:-\n";
-    for(int i=0;i<a.size();i++){
-        std::cin>>a[i];
+    for(int i=0;i<vec.size();i++){
+        cin>>vec[i];
     }
 }
 
-void display(std::vector<int> &a){
+void display(vector<int> &vec){
     cout<<"\narray data:-\n";
-    for(auto i : a){
+    for(auto i : vec){
     cout<<i<<" ";
     }
     cout<<"\n";
-    getch();
 }
 
-void insert_element(std::vector<int> &a){
+void insert_element(vector<int> &vec){
     int i,v;
-    display(a);
+    display(vec);
     input:
     cout<<"\nenter index :-";
-    std::cin>>i;
-    if(i<0 || i>a.size()){
+    cin>>i;
+    if(i<0 || i>vec.size()){
         cout<<"ERROR OUT OF RANGE";
         goto input;
     }
     cout<<"value=";
-    std::cin>>v;
-    a.insert(a.begin()+i,v);
+    cin>>v;
+    vec.insert(vec.begin()+i,v);
 }
 
-void delete_element(std::vector<int> &a){
+void delete_element(vector<int> &vec){
     int i;
-    display(a);
+    display(vec);
     input:
     cout<<"\nenter index :-";
-    std::cin>>i;
-    if(i<0 || i>=a.size()){
+    cin>>i;
+    if(i<0 || i>=vec.size()){
         cout<<"ERROR OUT OF RANGE";
         goto input;
     }
-    a.erase(a.begin()+i);
+    vec.erase(vec.begin()+i);
 }
 
-void search(std::vector<int> &a){
+void search(vector<int> &vec){
     int v,count=0;
     cout<<"value=";
-    std::cin>>v;
-    auto it = std::find(a.begin(), a.end(), v);
-    if (it != a.end()){
-        std::cout << "\nElement found at index: " << std::distance(a.begin(), it) << std::endl;
+    cin>>v;
+    auto it = find(vec.begin(), vec.end(), v);
+    if (it != vec.end()){
+        cout << "\nElement found at index: " << distance(vec.begin(), it) << endl;
     } 
     else{
-        std::cout << "\nElement not found" << std::endl;
+        cout << "\nElement not found" << endl;
     }
-    getch();
 }
