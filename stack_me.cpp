@@ -4,9 +4,9 @@ struct node{
     int value;
     node *ptr;
 };
-void push(node *&top,int value=100000){
+void push(node *&top,int value=999999999){
     node *nptr = new node;
-    if(value==100000){
+    if(value==999999999){
         cout<<"value=";
         cin>>nptr->value;
     }
