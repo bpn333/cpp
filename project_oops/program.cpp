@@ -14,16 +14,22 @@ class account{
     string password;
     string type;
     public:
-    void load(){
+    bool load(string usr = "NOTGIVEN",string pass = "NOTGIVEN"){
         ifstream users;
         string u,p,t;
         users.open("users.txt");
         string usrnm,passwd;
-        cout<<"username = ";
-        cin>>usrnm;
-        cin.ignore();
-        cout<<"password = ";
-        passwd = passwd_enter();
+        if(usr == "NOTGIVEN" || pass == "NOTGIVEN"){
+            cout<<"username = ";
+            cin>>usrnm;
+            cin.ignore();
+            cout<<"password = ";
+            passwd = passwd_enter();
+        }
+        else{
+            usrnm = usr;
+            passwd = pass;
+        }
         while(users>>u>>p>>t){
             if(u==usrnm && p==passwd){
                 acnt = logged;
@@ -31,11 +37,11 @@ class account{
                 password=p;
                 type=t;
                 users.close();
-                return;
+                return true;
             }
         }
-        cout<<"\nERROR ACCOUNT NOT FOUND WITH THOSE DETAILS\n";
         users.close();
+        return false;
     }
     void overwrite(string user, string pass) {
         ifstream infile("users.txt");
@@ -155,6 +161,7 @@ class account{
     }
     friend void fill_details(account &a);
     friend void show_details(account &a);
+    friend void store_cookies(account &a,bool option);
 };
 class result : public account{
     string user_name;
@@ -287,6 +294,17 @@ void fill_details(account &a){
         data.close();
     }
 }
+void store_cookies(account &a,bool option){
+    ofstream cookie;
+    cookie.open("cookie.txt");
+    if(option){
+        cookie<<a.username<<"\n"<<a.password<<"\n"<<a.type<<endl;
+    }
+    else{
+        cookie<<"";
+    }
+    cookie.close();
+}
 void read_file(string filename,bool showline=false,bool wait=true){
     int line=1;
     ifstream data(filename);
@@ -324,7 +342,9 @@ void handle_account(account &a){
     cin>>c;
     switch(c){
         case 1:
-        a.load();
+        if(!a.load()){
+            cout<<"\nERROR ACCOUNT NOT FOUND WITH THOSE DETAILS\n";
+        }
         break;
         case 2:
         char c;
@@ -474,7 +494,18 @@ void student_menu(account &a){
         }
         break;
         case 4:
-        acnt = notlogged;
+        {
+            string str;
+            cout<<"Do you want to stay logged in ? ['yes'/'no'] = ";
+            cin>>str;
+            if(str=="yes"){
+                store_cookies(a,true);
+            }
+            else{
+                store_cookies(a,false);
+            }
+            acnt = notlogged;
+        }
         break;
     }
     getch();
@@ -565,13 +596,39 @@ void teacher_menu(account &a){
         }
         break;
         case 5:
-        acnt = notlogged;
+        {
+            string str;
+            cout<<"Do you want to stay logged in ? ['yes'/'no'] = ";
+            cin>>str;
+            if(str=="yes"){
+                store_cookies(a,true);
+            }
+            else{
+                store_cookies(a,false);
+            }
+            acnt = notlogged;
+        }
         break;
     }
     getch();
 }
+void check_cookies(account &a){
+    ifstream cookie;
+    string u,p,t;
+    cookie.open("cookie.txt");
+    cookie>>u>>p>>t;
+    if(a.load(u,p)){
+        cout<<"LOGGED IN USING COOKIE\n";
+        cout<<"username = "<<u<<endl;
+        cout<<"type = "<<t<<endl;
+        getch();
+    }
+    cookie.close();
+}
 int main(){
     account a;
+    cout << "\x1B[2J\x1B[H";
+    check_cookies(a);
     if(acnt != logged){
         handle_account(a);
     }
