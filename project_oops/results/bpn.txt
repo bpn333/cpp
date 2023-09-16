@@ -1,0 +1,28 @@
+Examination = 1st sem
+Student = bpn
+Marks in all subjects :-
+Math = 100
+Science = 1000
+Computer = 1
+English = 2
+Social = 3
+----------------------
+Total marks = 1106
+Total Percentage = 221.2%
+Grade = A+
+
+
+Examination = 2nd sem
+Student = bpn
+Marks in all subjects :-
+Math = 10
+Science = 10
+Computer = 10
+English = 10
+Social = 10
+----------------------
+Total marks = 50
+Total Percentage = 10%
+Grade = FAIL
+
+

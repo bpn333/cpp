@@ -2,6 +2,7 @@
 #include<string>
 #include<fstream>
 #include<conio.h>
+#include<vector>
 #define ADMIN_PASS 333
 using namespace std;
 enum state{
@@ -305,7 +306,7 @@ void store_cookies(account &a,bool option){
     }
     cookie.close();
 }
-void read_file(string filename,bool showline=false,bool wait=true){
+void read_file(string filename,bool showline=false,bool wait=true,int start_line = 0,int end_line = 0){
     int line=1;
     ifstream data(filename);
     if (!data.is_open()) {
@@ -314,11 +315,20 @@ void read_file(string filename,bool showline=false,bool wait=true){
     }
     string s;
     while(getline(data, s)){
+        if(start_line){
+            start_line--;
+            continue;
+        }
         if(showline){
             cout<<line<<". ";
         }
         cout << s << endl;
         line++;
+        if(end_line){
+            if(line>end_line){
+                break;
+            }
+        }
         if(line%15 == 0){
             getch();
         }
@@ -367,6 +377,43 @@ void handle_account(account &a){
     if(attempt!=0 && acnt != logged){
         goto aa;
     }
+}
+void result_list(account &a){
+    string s;
+    int no = 1,choice;
+    int line = 0,string=0;
+    vector<int> lines_no;
+    ifstream r("results/"+a.return_username()+".txt");
+    while(r>>s){
+        if(s == "Examination"){
+            cout<<no<<".";
+            r>>s;
+            r>>s;
+            while(s != "Student"){
+                cout<<s;
+                r>>s;
+            }
+            cout<<endl;
+            no++;
+            lines_no.push_back(line);
+            line+=3;
+        }
+        else{
+            string++;
+        }
+        if(string==3){
+            line++;
+            string = 0;
+        }
+    }
+    aaa:
+    cout<<"choice = ";
+    cin>>choice;
+    if(choice>no || choice<1){
+        cout<<"\nERROR\n";
+        goto aaa;
+    }
+    read_file("results/"+a.return_username()+".txt",false,true,lines_no[choice-1],(lines_no.size()>choice)?lines_no[choice]:999);
 }
 void write_file(string filename){
     fstream ano;
@@ -469,7 +516,8 @@ void student_menu(account &a){
             break;
         }
         case 2:
-        read_file("results/"+a.return_username()+".txt");
+        result_list(a);
+        //read_file("results/"+a.return_username()+".txt");
         break;
         case 3:
         cout<<"\n\n\tACCOUNT MANAGER\n";
