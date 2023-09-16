@@ -1,0 +1,6 @@
+virus
+0
+teacher
+bpn
+333
+student

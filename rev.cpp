@@ -2,7 +2,7 @@
 int main() {
 int n,r,a;
 std::cout<<"enter a number :";
-std::std::cin>>n;
+std::cin>>n;
 a=0;
 while(n!=0)
 {

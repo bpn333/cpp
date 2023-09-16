@@ -22,13 +22,13 @@ int main(){
 	std::string name;
 	int age,n,i;
 	std::cout<<"no.:-";
-	std::std::cin>>n;
+	std::cin>>n;
 
 	for(i=0;i<=n;i++){
 	std::cout<<"name=";
-	std::std::cin>>name;
+	std::cin>>name;
 	std::cout<<"age=";
-	std::std::cin>>age;
+	std::cin>>age;
 	stud[i]=student(name,age); //std-_-
 	}
 	std::cout<<"\n\n\n";
