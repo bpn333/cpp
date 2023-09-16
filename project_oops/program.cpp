@@ -87,7 +87,7 @@ class account{
             cout<<"\nAUTHENTICATION FAILED\n";
             return;
         }
-        cout<<"New Username = ";
+        cout<<"\nNew Username = ";
         cin>>usr;
         cin.ignore();
         overwrite(usr,password);
@@ -98,7 +98,7 @@ class account{
             cout<<"\nAUTHENTICATION FAILED\n";
             return;
         }
-        cout<<"New Password = ";
+        cout<<"\nNew Password = ";
         pass = passwd_enter();
         overwrite(username,pass);
     }
