@@ -1,5 +1,4 @@
 #include<iostream>
-#include<vector>
 #include<conio.h>
 using namespace std;
 struct node{
