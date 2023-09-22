@@ -17,8 +17,8 @@ class account{
     public:
     bool load(string usr = "NOTGIVEN",string pass = "NOTGIVEN"){
         ifstream users;
-        string u,p,t;
-        users.open("users.txt");
+        string l1,l2,l3;
+        users.open("users.xyz");
         string usrnm,passwd;
         if(usr == "NOTGIVEN" || pass == "NOTGIVEN"){
             cout<<"username = ";
@@ -31,12 +31,14 @@ class account{
             usrnm = usr;
             passwd = pass;
         }
-        while(users>>u>>p>>t){
-            if(u==usrnm && p==passwd){
+        while(getline(users,l1)){
+            getline(users,l2);
+            getline(users,l3);
+            if(l1 == usrnm && l2 == passwd){
                 acnt = logged;
-                username=u;
-                password=p;
-                type=t;
+                username=usrnm;
+                password=passwd;
+                type=l3;
                 users.close();
                 return true;
             }
@@ -45,26 +47,28 @@ class account{
         return false;
     }
     void overwrite(string user, string pass) {
-        ifstream infile("users.txt");
-        ofstream outfile("temp.txt");
-        string u, p, t;
-        while (infile >> u >> p >> t) {
-            if (u == username && p == password) {
-                u = user;
-                p = pass;
+        ifstream infile("users.xyz");
+        ofstream outfile("temp.xyz");
+        string l1,l2,l3;
+        while (getline(infile,l1)) {
+            getline(infile,l2);
+            getline(infile,l3);
+            if (l1 == username && l2 == password) {
+                l1 = user;
+                l2 = pass;
             }
-            outfile<<u<<"\n"<<p<<"\n"<<t<<endl;
+            outfile<<l1<<"\n"<<l2<<"\n"<<l3<<endl;
             username = user;
             password = pass;
         }
         infile.close();
         outfile.close();
-        remove("users.txt");
-        rename("temp.txt", "users.txt");
+        remove("users.xyz");
+        rename("temp.xyz", "users.xyz");
     }
     void new_account(string t = "student"){
         ofstream users;
-        users.open("users.txt",ios::app);
+        users.open("users.xyz",ios::app);
         input:
         cin.ignore();
         cout<<"Username = ";
@@ -117,14 +121,15 @@ class account{
         }
     }
     bool check_username(string &s) const{
-        ifstream users("users.txt");
-        string u;
-        while(users>>u){
-            if(u==s){
+        ifstream users("users.xyz");
+        string l1;
+        while(getline(users,l1)){
+            if(l1==s){
                 users.close();
                 return false;
             }
-            users>>u>>u;
+            getline(users,l1);
+            getline(users,l1);
         }
         users.close();
         return true;
@@ -147,12 +152,16 @@ class account{
     }
     string return_type(string user){
         ifstream users;
-        string u,p,t;
-        users.open("users.txt");
-        while(users>>u>>p>>t){
-            if(u==user){
-                return t;
+        string l1;
+        users.open("users.xyz");
+        while(getline(users,l1)){
+            if(l1==user){
+                getline(users,l1);
+                getline(users,l1);
+                return l1;
             }
+            getline(users,l1);
+            getline(users,l1);
         }
         users.close();
         return "ERROR";
@@ -207,14 +216,14 @@ class result : public account{
     void write(){
         fstream res;
         ifstream old;
-        string tmp0,tmp1,tmp2;
+        string tmp_line;
         string filename = user_name;
         filename += ".txt";
         filename = "results/" + filename;
         res.open(filename,ios::app);
         old.open(filename);
-        while(old>>tmp0>>tmp1>>tmp2){
-            if(tmp0=="Examination" && tmp1=="=" && tmp2==session){
+        while(getline(old,tmp_line)){
+            if(tmp_line == "Examination = " + session){
                 cout<<"Result Already Exist Of The Exam\n";
                 return;
             }
@@ -295,9 +304,19 @@ void fill_details(account &a){
         data.close();
     }
 }
+bool yes_no(){
+    char c;
+    c = getch();
+    if(c == 'Y' || c == 'y'){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
 void store_cookies(account &a,bool option){
     ofstream cookie;
-    cookie.open("cookie.txt");
+    cookie.open("cookie.xyz");
     if(option){
         cookie<<a.username<<"\n"<<a.password<<"\n"<<a.type<<endl;
     }
@@ -360,8 +379,7 @@ void handle_account(account &a){
         char c;
         int p;
         cout<<"are you teacher (y/n)= ";
-        cin>>c;
-        if(c=='y' || c=='Y'){
+        if(yes_no()){
             cout<<"Admin Pass = ";
             cin>>p;
             if(p==ADMIN_PASS){
@@ -542,18 +560,15 @@ void student_menu(account &a){
         }
         break;
         case 4:
-        {
-            string str;
-            cout<<"Do you want to stay logged in ? ['yes'/'no'] = ";
-            cin>>str;
-            if(str=="yes"){
-                store_cookies(a,true);
-            }
-            else{
-                store_cookies(a,false);
-            }
-            acnt = notlogged;
+        cout<<"Do you want to stay logged in ? [y/n] = ";
+        if(yes_no()){
+            store_cookies(a,true);
         }
+        else{
+            store_cookies(a,false);
+        }
+        acnt = notlogged;
+        return;
         break;
     }
     getch();
@@ -644,18 +659,15 @@ void teacher_menu(account &a){
         }
         break;
         case 5:
-        {
-            string str;
-            cout<<"Do you want to stay logged in ? ['yes'/'no'] = ";
-            cin>>str;
-            if(str=="yes"){
-                store_cookies(a,true);
-            }
-            else{
-                store_cookies(a,false);
-            }
-            acnt = notlogged;
+        cout<<"Do you want to stay logged in ? [y/n] = ";
+        if(yes_no()){
+            store_cookies(a,true);
         }
+        else{
+            store_cookies(a,false);
+        }
+        acnt = notlogged;
+        return;
         break;
     }
     getch();
@@ -663,7 +675,7 @@ void teacher_menu(account &a){
 void check_cookies(account &a){
     ifstream cookie;
     string u,p,t;
-    cookie.open("cookie.txt");
+    cookie.open("cookie.xyz");
     cookie>>u>>p>>t;
     if(a.load(u,p)){
         cout<<"LOGGED IN USING COOKIE\n";

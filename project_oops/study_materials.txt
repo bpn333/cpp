@@ -1,1 +1,2 @@
 study_material/science/living_lion.txt
+study_material/science/solar_system.txt

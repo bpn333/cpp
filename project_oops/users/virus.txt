@@ -1,0 +1,7 @@
+NAME = Virus Tripathi
+Emp No = 0
+Address = 000
+Phone No = 000
+Date of Birth = 000
+Position = principle
+Date of Joining = 000
