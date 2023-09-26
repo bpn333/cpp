@@ -28,14 +28,78 @@ class account{        //singly linked list
         balance = b;
     }
     void show(){
+        cout<<endl;
         cout<<"Account no = "<<account_no<<endl;
         cout<<"Username = "<<username<<endl;
+        cout<<"Password = "<<password<<endl;            //testing
         switch(type){
             case 0:cout<<"Account type = saving"<<endl;break;
             case 1:cout<<"Account type = active"<<endl;break;
             case 2:cout<<"Account type = locked"<<endl;break;
         }
-        cout<<"Balance = "<<balance<<endl;
+        cout<<"Balance = "<<balance<<" /-"<<endl;
+    }
+    void transfer(account *&o){
+        int amount;
+        cout<<"Amount to transfer = ";
+        cin>>amount;
+        if(amount <= 0 ){
+            cout<<"Minimum Amount should be greater than 0"<<endl;
+        }
+        else if(amount > balance){
+            cout<<"Not enough balance in account"<<endl;
+        }
+        else{
+            balance -= amount;
+            o->balance += amount;
+            record(Date+" Transferred "+to_string(amount)+" /-"+" to "+to_string(o->account_no));
+            o->record(Date+" Received "+to_string(amount)+" /-"+" from "+to_string(account_no));
+        }
+    }
+    void credit(){
+        int amount;
+        cout<<"Amount to credit = ";
+        cin>>amount;
+        if(amount > 500000){
+            cout<<"YOU WILL NEED SPECIAL DOCUMENT AND PERMISSION TO CREDIT MORE THAN 500000"<<endl;
+        }
+        else if(amount <= 0){
+            cout<<"Minimum Amount should be greater than 0"<<endl;
+        }
+        else{
+            balance += amount;
+            record(Date+" Credited "+to_string(amount)+" /-");
+        }
+    }
+    void withdraw(){
+        int amount;
+        cout<<"Amount to debit = ";
+        cin>>amount;
+        if(amount > 50000){
+            cout<<"YOU WILL NEED SPECIAL DOCUMENT AND PERMISSION TO DEBIT MORE THAN 50000"<<endl;
+        }
+        else if(amount <= 0){
+            cout<<"Minimum Amount should be greater than 0"<<endl;
+        }
+        else{
+            balance -= amount;
+            record(Date+" Withdrawn "+to_string(amount)+" /-");
+        }
+    }
+    void record(string msg){
+        ofstream r;
+        string accnt = to_string(account_no);
+        r.open("records/" + accnt + "_history.txt",ios::app);
+        //cout<<"called record for file "<<"/records/" + accnt + ".txt"<<endl;
+        //cout<<"msg:-\n"<<msg<<endl;
+        r<<msg<<endl;
+        r.close();
+    }
+    int return_accnt_no(){
+        return account_no;
+    }
+    char* return_username(){
+        return username;
     }
     friend class accounts;
 };
@@ -44,8 +108,9 @@ class accounts{                             //singlylinked list implementation w
     account *hptr;
     account *tptr;
     public:
+    int total_number;
     accounts(){
-        cout<<"constructor called"<<endl;
+        total_number = 0;
         hptr = nullptr;
         tptr = nullptr;
     }
@@ -75,6 +140,7 @@ class accounts{                             //singlylinked list implementation w
             tptr->next = a;
             tptr = a;
         }
+        total_number += 1;
     }
     void show_all(){
         account *tmptr=hptr;
@@ -89,6 +155,16 @@ class accounts{                             //singlylinked list implementation w
         account *tmptr=hptr;
         while(tmptr!=nullptr){
             if(strcmp(tmptr->username,usrnm)==0 && strcmp(tmptr->password,passwd)==0){
+                return tmptr;
+            }
+            tmptr = tmptr->next;
+        }
+        return nullptr;
+    }
+    account* find_account(int acnt_num){
+        account *tmptr=hptr;
+        while(tmptr!=nullptr){
+            if(tmptr->account_no == acnt_num){
                 return tmptr;
             }
             tmptr = tmptr->next;
@@ -142,14 +218,7 @@ void updateDate(){
     ofstream o("date.txt");
     o<<day<<" "<<month<<" "<<year;
 }
-bool login(accounts &accnts, account *&working_acnt){
-    cout << "\x1B[2J\x1B[H";
-    char usrnm[20],passwd[20];
-    cout<<"##############################################################################"<<endl;
-    cout<<"\t\t\tWELCOME TO LOGIN PAGE"<<endl;
-    cout<<"\n\nUserName = ";
-    cin>>usrnm;
-    cout<<"\nPassword = ";
+void password_enter(char passwd[]){
     int count = 0;
     char c;
     while(true){
@@ -161,15 +230,64 @@ bool login(accounts &accnts, account *&working_acnt){
         cout<<"*";
         passwd[count++] = c;
     }
-    cout<<endl<<endl;
+    cout<<endl;
+}
+void read_file(string file_name){
+    ifstream f(file_name);
+    string line;
+    while(getline(f,line)){
+        cout<<line<<endl;
+    }
+    getch();
+}
+void register_account(accounts &accnts){
+    char usrnm[20],passwd_1[20],passwd_2[20];
+    int account_number;
+    char c;
+    cout << "Do you want to Register Account :- ";
+    c = getch();
+    cout << "\x1B[2J\x1B[H";
+    if(c!='y'){
+        return;
+    }
+    cout<<endl;
+    aa:
+    cout<<"\t\t\tWELCOME TO REGISTER PAGE"<<endl;
+    cout<<"\n\nUserName = ";
+    cin>>usrnm;
+    cout<<"\nPassword = ";
+    password_enter(passwd_1);
+    cout<<"\nRetype Password = ";
+    password_enter(passwd_2);
+    if(strcmp(passwd_1,passwd_2)!=0){
+        cout<<"BOTH PASSWORD DOESNT MATCH"<<endl;
+        getch();
+        cout << "\x1B[2J\x1B[H";
+        goto aa;
+    }
+    for(int i=0;i<accnts.total_number;i++){
+        account_number = rand() % (1000000 - 1000 + 1) + 1000;      //formula = rand() % (higher_limit - lower_limit + 1) + lower_limit
+    }
+    accnts.add_account(account_number,usrnm,passwd_1,saving,0);
+    cout << "\x1B[2J\x1B[H";
+}
+bool login(accounts &accnts, account *&working_acnt){
+    char usrnm[20],passwd[20];
+    register_account(accnts);
+    cout<<"##############################################################################"<<endl;
+    cout<<"\t\t\tWELCOME TO LOGIN PAGE"<<endl;
+    cout<<"\n\nUserName = ";
+    cin>>usrnm;
+    cout<<"\nPassword = ";
+    password_enter(passwd);
+    cout<<endl;
     working_acnt = accnts.user_account(usrnm,passwd);
     if(!working_acnt){
         return false;
     }
-    cout<<"##############################################################################"<<endl;
     return true;
 }
-void user_dashboard(account *&working_acnt){
+void user_dashboard(account *&working_acnt,accounts &accnts){
     while(true){
         int choice;
         cout << "\x1B[2J\x1B[H";
@@ -179,14 +297,44 @@ void user_dashboard(account *&working_acnt){
         cout<<"\nDATE = "<<Date<<endl;
         cout<<"\nChoose one of the following options:-"<<endl;
         cout<<"1.Fund Transfer"<<endl;
-        cout<<"2.Deposit Balance"<<endl;
-        cout<<"3.History"<<endl;
+        cout<<"2.Credit Balance"<<endl;
+        cout<<"3.Withdraw Balance"<<endl;
+        cout<<"4.History"<<endl;
+        cout<<"5.Exit"<<endl;
         cout<<"choice = ";
         cin>>choice;
         switch(choice){
-            //i will do later
+            case 1:
+            {
+                int acnt_num;
+                account *receiver_acnt;
+                cout<<"Enter the account number of receiver_acnt = ";
+                cin>>acnt_num;
+                receiver_acnt = accnts.find_account(acnt_num);
+                if(!receiver_acnt){
+                    cout<<"ACCOUNT NOT FOUND WITH THAT ACCOUNT NUMBER"<<endl;
+                }
+                else{
+                    working_acnt->transfer(receiver_acnt);
+                }
+            }
+            break;
+            case 2:
+            working_acnt->credit();
+            break;
+            case 3:
+            working_acnt->withdraw();
+            break;
+            case 4:
+            read_file("records/" + to_string(working_acnt->return_accnt_no()) + "_history.txt");
+            break;
+            case 5:
+            return;
+            break;
+            default:
+            cout<<"ERROR INVALID OPTION"<<endl;
         }
-        return;
+        getch();
     }
 }
 int main(){
@@ -195,12 +343,14 @@ int main(){
     account *working_acnt;
     accnts.loadfile();
     accnts.show_all();
+    cout << "\x1B[2J\x1B[H";
     if(login(accnts,working_acnt)){
         cout << "\x1B[2J\x1B[H";
         cout<<"\n\n\t\tLOGIN SUCESSFULL.....\n";
         working_acnt->show();
         getch();
-        user_dashboard(working_acnt);
+        user_dashboard(working_acnt,accnts);
     }
     updateDate();
+    accnts.savefile();
 }
