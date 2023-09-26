@@ -31,7 +31,7 @@ class account{        //singly linked list
         cout<<endl;
         cout<<"Account no = "<<account_no<<endl;
         cout<<"Username = "<<username<<endl;
-        cout<<"Password = "<<password<<endl;            //testing
+        //cout<<"Password = "<<password<<endl;            //testing
         switch(type){
             case 0:cout<<"Account type = saving"<<endl;break;
             case 1:cout<<"Account type = active"<<endl;break;
@@ -142,7 +142,7 @@ class accounts{                             //singlylinked list implementation w
         }
         total_number += 1;
     }
-    void show_all(){
+    void show_all(){           //testing
         account *tmptr=hptr;
         cout<<"ACCOUNTS :-\n";
         while(tmptr!=nullptr){
