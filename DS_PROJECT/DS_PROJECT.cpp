@@ -21,10 +21,6 @@ class account{
     public:
     account(){}
     account(int an,char usrnm[],char passwd[],account_type t,int b){
-        if(type == locked){
-            cout<<"YOUR ACCOUNT IS LOCKED BY OUR SECURITY SYSTEM VISIT NEAREST BRANCH"<<endl;
-            return;
-        }
         account_no = an;
         strcpy(username,usrnm);
         strcpy(password,passwd);
