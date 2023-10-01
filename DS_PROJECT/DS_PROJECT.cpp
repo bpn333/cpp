@@ -10,7 +10,7 @@ enum account_type{
     locked
 };
 string Date;
-class account{        //singly linked list
+class account{
     protected:
     int account_no;
     char username[20];
@@ -19,7 +19,12 @@ class account{        //singly linked list
     int balance;
     account *next;
     public:
+    account(){}
     account(int an,char usrnm[],char passwd[],account_type t,int b){
+        if(type == locked){
+            cout<<"YOUR ACCOUNT IS LOCKED BY OUR SECURITY SYSTEM VISIT NEAREST BRANCH"<<endl;
+            return;
+        }
         account_no = an;
         strcpy(username,usrnm);
         strcpy(password,passwd);
@@ -40,6 +45,9 @@ class account{        //singly linked list
         cout<<"Balance = "<<balance<<" /-"<<endl;
     }
     void transfer(account *&o){
+        if(!security_check() || !o->security_check()){
+            return;
+        }
         int amount;
         cout<<"Amount to transfer = ";
         cin>>amount;
@@ -56,22 +64,28 @@ class account{        //singly linked list
             o->record(Date+" Received "+to_string(amount)+" /-"+" from "+to_string(account_no));
         }
     }
-    void credit(){
+    void Deposit(){
+        if(!security_check()){
+            return;
+        }
         int amount;
-        cout<<"Amount to credit = ";
+        cout<<"Amount to Deposit = ";
         cin>>amount;
         if(amount > 500000){
-            cout<<"YOU WILL NEED SPECIAL DOCUMENT AND PERMISSION TO CREDIT MORE THAN 500000"<<endl;
+            cout<<"YOU WILL NEED SPECIAL DOCUMENT AND PERMISSION TO Deposit MORE THAN 500000"<<endl;
         }
         else if(amount <= 0){
             cout<<"Minimum Amount should be greater than 0"<<endl;
         }
         else{
             balance += amount;
-            record(Date+" Credited "+to_string(amount)+" /-");
+            record(Date+" Deposited "+to_string(amount)+" /-");
         }
     }
     void withdraw(){
+        if(!security_check()){
+            return;
+        }
         int amount;
         cout<<"Amount to debit = ";
         cin>>amount;
@@ -101,6 +115,34 @@ class account{        //singly linked list
     char* return_username(){
         return username;
     }
+    bool security_check(){
+        ifstream r;
+        string l;
+        int count = 0;
+        string accnt = to_string(account_no);
+        r.open("records/" + accnt + "_history.txt",ios::app);
+        while(getline(r,l)){
+            if(l.find(Date) != std::string::npos){
+                count += 1;
+            }
+        }
+        if(count>=5){
+            cout<<"WE LOCKED ACCOUNT "<<account_no<<" FOR REACHING TRANSACTION LIMIT"<<endl;
+            record(Date+" Attempted to use "+to_string(count)+"th service today");
+            record(Date+" ACCOUNT LOCKED FOR REACHING LIMIT");
+            type = locked;
+        }
+        else{
+            type = saving;
+        }
+        if(type == locked){
+            cout<<account_no<<" ACCOUNT LOCKED"<<endl;
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
     friend class accounts;
 };
 class accounts{                             //singlylinked list implementation with 2 pointers at start and end
@@ -116,8 +158,8 @@ class accounts{                             //singlylinked list implementation w
     }
     void loadfile(){
         ifstream db(database);
-        account tmp(0,(char*)"",(char*)"",saving,0);
-        while(db.read((char*)(&tmp),sizeof(account))){
+        account tmp;
+        while(db.read(reinterpret_cast<char*>(&tmp),sizeof(account))){
             add_account(tmp.account_no,tmp.username,tmp.password,tmp.type,tmp.balance);
         }
         db.close();
@@ -170,6 +212,149 @@ class accounts{                             //singlylinked list implementation w
             tmptr = tmptr->next;
         }
         return nullptr;
+    }
+};
+class account_detail{
+    account_detail *node;
+    int account_no;
+    char name[20];
+    char address[20];
+    char DOB[20];
+    char father_name[20];
+    char mother_name[20];
+    char profession[20];
+    account_detail *node_left;
+    account_detail *node_right;
+    public:
+    account_detail(){}
+    account_detail(int accnt_no,char nm[],char add[],char DBirth[],char father[],char mother[],char ocuptn[]){
+        account_no = accnt_no;
+        strcpy(name,nm);
+        strcpy(address,add);
+        strcpy(DOB,DBirth);
+        strcpy(father_name,father);
+        strcpy(mother_name,mother);
+        strcpy(profession,ocuptn);
+        node_left = nullptr;
+        node_right = nullptr;
+    }
+    void show_detail(){
+        cout<<"ACCOUNT DETAIL :- "<<endl;
+        cout<<"Account No : "<<account_no<<endl;
+        cout<<"Name : "<<name<<endl;
+        cout<<"Address : "<<address<<endl;
+        cout<<"Father's Name : "<<father_name<<endl;
+        cout<<"Mother's Name : "<<mother_name<<endl;
+        cout<<"Profession : "<<profession<<endl;
+        cout<<endl;
+    }
+    friend class account_details; 
+};
+class account_details{          //Binary Search Tree implementation to store user details
+    account_detail *root;
+    public:
+    account_details(){
+        root = nullptr;
+    }
+    void loadfile(){
+        ifstream db("users_details.dat");
+        account_detail tmp;
+        while(db.read(reinterpret_cast<char*>(&tmp),sizeof(account_detail))){
+            add_account_detail(tmp.account_no,tmp.name,tmp.address,tmp.DOB,tmp.father_name,tmp.mother_name,tmp.profession);
+            //tmp.show_detail();        //testing
+        }
+        db.close();
+    }
+    void savefile(account_detail *node,ofstream &db){
+        if(node->node_left){
+            savefile(node->node_left,db);
+        }
+        db.write(reinterpret_cast<char*>(node),sizeof(account_detail));
+        if(node->node_right){
+            savefile(node->node_right,db);
+        }
+    }
+    void savefile(){
+        ofstream db("users_details.dat");
+        savefile(root,db);
+        db.close();
+    }
+    void add_account_detail(int accnt_no,char nm[],char add[],char DBirth[],char father[],char mother[],char ocuptn[]){
+        account_detail *nptr = new account_detail(accnt_no,nm,add,DBirth,father,mother,ocuptn);
+        if(root == nullptr){
+            root = nptr;
+        }
+        else{
+            account_detail *current_node=root;
+            while(true){
+                if(accnt_no > current_node->account_no){
+                    if(current_node->node_right == nullptr){
+                        current_node->node_right = nptr;
+                        break;
+                    }
+                    current_node = current_node->node_right;
+                }
+                else{
+                    if(current_node->node_left == nullptr){
+                        current_node->node_left = nptr;
+                        break;
+                    }
+                    current_node = current_node->node_left;
+                }
+            }
+        }
+    }
+    account_detail* find_detail(int accnt_no){
+        if(root == nullptr){
+            return nullptr;
+        }
+        account_detail *current_node=root;
+        while(true){
+            if(current_node->account_no == accnt_no){
+                return current_node;
+            }
+            if(accnt_no > current_node->account_no){
+                if(!current_node->node_right){
+                    return nullptr;
+                }
+                current_node = current_node->node_right;
+            }
+            else{
+                if(!current_node->node_left){
+                    return nullptr;
+                }
+                current_node = current_node->node_left;
+            }
+        }
+        return nullptr;
+    }
+    void show_account_detail(int accnt_no){
+        account_detail *acnt_detail = find_detail(accnt_no);
+        if(acnt_detail == nullptr){
+            cout<<"NO DETAILS FOUND";
+            return;
+        }
+        acnt_detail->show_detail();
+    }
+    void fill_detail(int accnt_no){
+        account_detail *nptr = new account_detail;
+        cout<<endl;
+        cout<<"\nACCOUNT DETAIL :- "<<endl;
+        cout<<"\nAccount No : "<<accnt_no<<endl;
+        nptr->account_no = accnt_no;
+        cin.ignore();
+        cout<<"\nName : ";
+        fgets(nptr->name,20,stdin);
+        cout<<"Address : ";
+        fgets(nptr->address,20,stdin);
+        cout<<"Father's Name : ";
+        fgets(nptr->father_name,20,stdin);
+        cout<<"Mother's Name : ";
+        fgets(nptr->mother_name,20,stdin);
+        cout<<"Profession : ";
+        fgets(nptr->profession,20,stdin);
+        cout<<endl;
+        add_account_detail(nptr->account_no,nptr->name,nptr->address,nptr->DOB,nptr->father_name,nptr->mother_name,nptr->profession);
     }
 };
 string readDate(){
@@ -233,10 +418,16 @@ void password_enter(char passwd[]){
     cout<<endl;
 }
 void read_file(string file_name){
+    int max = 20;
+    int count = 1;
     ifstream f(file_name);
     string line;
     while(getline(f,line)){
         cout<<line<<endl;
+        count++;
+        if(count % max == 0){
+            getch();
+        }
     }
     getch();
 }
@@ -252,6 +443,7 @@ void register_account(accounts &accnts){
     }
     cout<<endl;
     aa:
+    cout << "\x1B[2J\x1B[H";  //clrscr();
     cout<<"\t\t\tWELCOME TO REGISTER PAGE"<<endl;
     cout<<"\n\nUserName = ";
     cin>>usrnm;
@@ -269,6 +461,10 @@ void register_account(accounts &accnts){
         account_number = rand() % (1000000 - 1000 + 1) + 1000;      //formula = rand() % (higher_limit - lower_limit + 1) + lower_limit
     }
     accnts.add_account(account_number,usrnm,passwd_1,saving,0);
+    account_details a;
+    a.loadfile();
+    a.fill_detail(account_number);
+    a.savefile();
     cout << "\x1B[2J\x1B[H";
 }
 bool login(accounts &accnts, account *&working_acnt){
@@ -283,6 +479,7 @@ bool login(accounts &accnts, account *&working_acnt){
     cout<<endl;
     working_acnt = accnts.user_account(usrnm,passwd);
     if(!working_acnt){
+        cout<<"LOGIN FAILED"<<endl;
         return false;
     }
     return true;
@@ -297,10 +494,11 @@ void user_dashboard(account *&working_acnt,accounts &accnts){
         cout<<"\nDATE = "<<Date<<endl;
         cout<<"\nChoose one of the following options:-"<<endl;
         cout<<"1.Fund Transfer"<<endl;
-        cout<<"2.Credit Balance"<<endl;
+        cout<<"2.Deposit Balance"<<endl;
         cout<<"3.Withdraw Balance"<<endl;
         cout<<"4.History"<<endl;
-        cout<<"5.Exit"<<endl;
+        cout<<"5.User Details"<<endl;
+        cout<<"6.Exit"<<endl;
         cout<<"choice = ";
         cin>>choice;
         switch(choice){
@@ -320,7 +518,7 @@ void user_dashboard(account *&working_acnt,accounts &accnts){
             }
             break;
             case 2:
-            working_acnt->credit();
+            working_acnt->Deposit();
             break;
             case 3:
             working_acnt->withdraw();
@@ -329,6 +527,13 @@ void user_dashboard(account *&working_acnt,accounts &accnts){
             read_file("records/" + to_string(working_acnt->return_accnt_no()) + "_history.txt");
             break;
             case 5:
+            {
+                account_details a;
+                a.loadfile();
+                a.show_account_detail(working_acnt->return_accnt_no());
+            }
+            break;
+            case 6:
             return;
             break;
             default:
