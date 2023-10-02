@@ -261,7 +261,7 @@ class account_details{          //Binary Search Tree implementation to store use
         }
         db.close();
     }
-    void savefile(account_detail *node,ofstream &db){
+    void savefile(account_detail *node,ofstream &db){           //saves in inorder sequence
         if(node->node_left){
             savefile(node->node_left,db);
         }
