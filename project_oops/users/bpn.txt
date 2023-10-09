@@ -1,5 +1,5 @@
 NAME = Bipin Lamsal
 Roll No = 2233588
-Address = Nepal
-Phone No = 9809274867
-Date of Birth = 0000
+Address = Chitwan Nepal
+Phone No = 9809274
+Date of Birth = 07 March 2004

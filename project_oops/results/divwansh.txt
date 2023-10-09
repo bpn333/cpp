@@ -1,0 +1,14 @@
+Examination = 1st term
+Student = divwansh
+Marks in all subjects :-
+Math = 100
+Science = 100
+Computer = 80
+English = 70
+Social = 70
+----------------------
+Total marks = 420
+Total Percentage = 84%
+Grade = A
+
+

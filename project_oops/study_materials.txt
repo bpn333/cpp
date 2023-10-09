@@ -1,2 +1,2 @@
-study_material/science/living_lion.txt
-study_material/science/solar_system.txt
+study_material/computer/fundamentals.txt
+study_material/computer/concept_of_oops.txt

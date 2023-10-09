@@ -1,0 +1,52 @@
+LECTURE-1
+Introduction:
+Programmers write instructions in various programming languages to perform their computation
+tasks such as:
+(i) Machine level Language
+(ii) Assembly level Language
+(iii) High level Language
+Machine level Language :
+Machine code or machine language is a set of instructions executed directly by a computer's central
+processing unit (CPU). Each instruction performs a very specific task, such as a load, a jump, or an
+ALU operation on a unit of data in a CPU register or memory. Every program directly executed by a
+CPU is made up of a series of such instructions.
+Assembly level Language :
+An assembly language (or assembler language) is a low-level programming language for a computer,
+or other programmable device, in which there is a very strong (generally one-to-one) correspondence
+between the language and the architecture's machine code instructions. Assembly language is
+converted into executable machine code by a utility program referred to as an assembler; the
+conversion process is referred to as assembly, or assembling the code.
+High level Language :
+High-level language is any programming language that enables development of a program in much
+simpler programming context and is generally independent of the computer's hardware architecture.
+High-level language has a higher level of abstraction from the computer, and focuses more on the
+programming logic rather than the underlying hardware components such as memory addressing and
+register utilization.
+The first high-level programming languages were designed in the 1950s. Now there are dozens of
+different languages, including Ada , Algol, BASIC, COBOL, C, C++, JAVA, FORTRAN, LISP,
+Pascal, and Prolog. Such languages are considered high-level because they are closer to human
+languages and farther from machine languages. In contrast, assembly languages are considered lowlevel because they are very close to machine languages.
+The high-level programming languages are broadly categorized in to two categories:
+(iv) Procedure oriented programming(POP) language.
+(v) Object oriented programming(OOP) language.
+Procedure Oriented Programming Language
+In the procedure oriented approach, the problem is viewed as sequence of things to be done such as
+reading , calculation and printing.
+Procedure oriented programming basically consist of writing a list of instruction or actions for the
+computer to follow and organizing these instruction into groups known as functions.
+Main program
+ Function-1 Function-2 Function-3
+The disadvantage of the procedure oriented programming languages is:
+1. Global data access
+2. It does not model real word problem very well
+3. No data hiding
+Global data Global data
+ Function-1 Function-2 Function-3
+ Local data Local data Local data
+Characteristics of procedure oriented programming:
+1. Emphasis is on doing things(algorithm)
+2. Large programs are divided into smaller programs known as functions.
+3. Most of the functions share global data
+4. Data move openly around the system from function to function
+5. Function transforms data from one form to another.
+6. Employs top-down approach in program design 

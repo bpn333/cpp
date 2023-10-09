@@ -1,0 +1,7 @@
+NAME = Venum ...
+Emp No = 1
+Address = AGC Hostel
+Phone No = 980011
+Date of Birth = 1995
+Position = OOPS Teacher
+Date of Joining = 2007

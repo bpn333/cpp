@@ -402,6 +402,11 @@ void result_list(account &a){
     int line = 0,string=0;
     vector<int> lines_no;
     ifstream r("results/"+a.return_username()+".txt");
+    if(!r){
+        cout<<"NO RESULT DATA FOUND"<<endl;
+        r.close();
+        return;
+    }
     while(r>>s){
         if(s == "Examination"){
             cout<<no<<".";
