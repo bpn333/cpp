@@ -1,0 +1,14 @@
+Examination = 1st sem
+Student = bpn
+Marks in all subjects :-
+Math = 70
+Science = 70
+Computer = 70
+English = 70
+Social = 70
+----------------------
+Total marks = 350
+Total Percentage = 70%
+Grade = B
+
+

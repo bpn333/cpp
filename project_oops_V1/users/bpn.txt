@@ -1,0 +1,5 @@
+NAME = Bipin
+Roll No = 2233588
+Address = Nepal
+Phone No = 9809274867
+Date of Birth = 2004

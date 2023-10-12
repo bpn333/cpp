@@ -1,0 +1,3 @@
+study_material/computer/fundamentals.txt
+study_material/computer/concept_of_oops.txt
+study_material/computer/tips_and_tricks.txt
