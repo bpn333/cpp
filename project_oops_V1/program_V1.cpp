@@ -10,7 +10,7 @@
 #define DATABASE "user.dat"
 #define DELAY(a) this_thread::sleep_for(chrono::milliseconds(a));
 using namespace std;
-void print_with_delay(string line,int millisecond=20,bool endline=true){
+void print_with_delay(string line,int millisecond=10,bool endline=true){
     for(int i=0;i<line.size();i++){
         cout<<line[i];
         if(line[i]==' ' || line[i]=='-'){
@@ -458,12 +458,12 @@ bool handle_account(account &a){
     }
     return false;
 }
-void result_list(account &a){
+void result_list(string username){
     string s;
     int no = 1,choice;
     int line = 0,string=0;
     vector<int> lines_no;
-    ifstream r("results/"+a.return_username()+".txt");
+    ifstream r("results/"+username+".txt");
     if(!r){
         print_with_delay("\t\t\tNO RESULT DATA FOUND");
         r.close();
@@ -498,7 +498,7 @@ void result_list(account &a){
         print_with_delay("\n\t\t\tERROR\n");
         goto aaa;
     }
-    read_file("results/"+a.return_username()+".txt",false,false,lines_no[choice-1],(lines_no.size()>choice)?lines_no[choice]:999,3);
+    read_file("results/"+username+".txt",false,false,lines_no[choice-1],(lines_no.size()>choice)?lines_no[choice]:999,3);
 }
 void write_file(string filename){
     fstream ano;
@@ -575,6 +575,32 @@ void update_material(string filename){
     stdy<<filename<<endl;
     stdy.close();
 }
+void arrange_and_show_results(){
+    string l;
+    int line_no=0;
+    string session;
+    cout<<"\t\t\tSession = ";
+    getline(cin,session);
+    for (const auto &entry : filesystem::directory_iterator("results")) {
+        if (filesystem::is_regular_file(entry)) {
+            ifstream input(entry.path());
+            while(getline(input,l)){
+                if(l == "Examination = "+session){
+                    cout<<"\n\n";
+                    line_no=1;
+                    for(int i=0;i<14;i++){
+                        if(line_no==2 || line_no==11){
+                            cout<<"\t\t\t"<<l<<endl;
+                        }
+                        getline(input,l);
+                        line_no++;
+                    }
+                }
+            }
+        }
+        line_no = 0;
+    }
+};
 bool student_menu(account &a){
     int choice,c;
     print_with_delay("\t\t\t\tWELCOME TO AMRITSAR LMS SOFTWARE\n\n");
@@ -609,7 +635,7 @@ bool student_menu(account &a){
             break;
         }
         case 2:
-        result_list(a);
+        result_list(a.return_username());
         //read_file("results/"+a.return_username()+".txt");
         break;
         case 3:
@@ -654,9 +680,10 @@ bool teacher_menu(account &a){
     print_with_delay("\t\t\t\tWELCOME TO AMRITSAR LMS SOFTWARE\n");
     print_with_delay("\t\t\t1.Announcement");
     print_with_delay("\t\t\t2.Set Result");
-    print_with_delay("\t\t\t3.Upload Study Material");
-    print_with_delay("\t\t\t4.Account Manager");
-    print_with_delay("\t\t\t5.Logout");
+    print_with_delay("\t\t\t3.View All Students Results");
+    print_with_delay("\t\t\t4.Upload Study Material");
+    print_with_delay("\t\t\t5.Account Manager");
+    print_with_delay("\t\t\t6.Logout");
     print_with_delay("\t\t\tchoice=",40,false);
     cin>>choice;
     cin.ignore();
@@ -669,6 +696,9 @@ bool teacher_menu(account &a){
         r.write();
         break;
         case 3:
+        arrange_and_show_results();
+        break;
+        case 4:
             cout << "\x1B[2J\x1B[H";        
             {
             int option;
@@ -719,7 +749,7 @@ bool teacher_menu(account &a){
             }
         }
         break;
-        case 4:
+        case 5:
         print_with_delay("\n\n\t\t\tACCOUNT MANAGER\n");
         print_with_delay("\t\t\t1.View Details");
         print_with_delay("\t\t\t2.Change UserName");
@@ -741,7 +771,7 @@ bool teacher_menu(account &a){
             print_with_delay("\n\t\t\tINVALID OPTION\n",40,false);
         }
         break;
-        case 5:
+        case 6:
         print_with_delay("\t\t\tDo you want to stay logged in ? [y/n] = ",40,false);
         if(yes_no()){
             store_cookies(a,true);

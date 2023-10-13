@@ -1,4 +1,4 @@
-Examination = 1st term
+Examination = 1st sem
 Student = divwansh
 Marks in all subjects :-
 Math = 100
