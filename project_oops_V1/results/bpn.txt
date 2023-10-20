@@ -12,3 +12,17 @@ Total Percentage = 70%
 Grade = B
 
 
+Examination = 2nd sem
+Student = bpn
+Marks in all subjects :-
+Math = 10
+Science = 20
+Computer = 99
+English = 99
+Social = 88
+----------------------
+Total marks = 316
+Total Percentage = 63.2%
+Grade = B
+
+

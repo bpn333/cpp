@@ -438,9 +438,10 @@ bool handle_account(account &a){
         case 2:
         char c;
         int p;
-        print_with_delay("\t\t\tare you teacher (y/n)= ",40,false);
+        print_with_delay("\t\t\tare you teacher (y/n)= ",40,true);
         if(yes_no()){
-            print_with_delay("Admin Pass = ",40,false);
+            cout<<endl;
+            print_with_delay("\t\t\tAdmin Pass = ",40,false);
             cin>>p;
             if(p==ADMIN_PASS){
                 a.new_account("teacher");
@@ -507,6 +508,8 @@ void write_file(string filename){
     print_with_delay("\t\t\tOpen in :-\n\t\t\t1.Overwrite\n\t\t\t2.Append\n\t\t\tchoice=",40,false);
     if(!filesystem::exists(filename)){
         cout<<"1";
+        op=1;
+        getch();
     }
     else{
         cin>>op;
