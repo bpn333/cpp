@@ -190,7 +190,7 @@ class account{
     friend void show_details(account &a);
     friend void store_cookies(account &a,bool option);
 };
-class result : public account{
+class result : protected account{
     string user_name;
     string session;
     int math;
