@@ -1,0 +1,5 @@
+NAME = Rajeev Subhedi
+Roll No = 22
+Address = Chitwan
+Phone No = 9898
+Date of Birth = 2006

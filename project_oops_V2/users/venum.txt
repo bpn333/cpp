@@ -1,0 +1,8 @@
+NAME = Venum Sharma
+Emp No = 1
+Address = india
+Phone No = 9332
+Date of Birth = 2000
+Position = Teacher
+Subject = computer
+Date of Joining = 2010

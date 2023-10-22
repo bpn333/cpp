@@ -1,0 +1,8 @@
+NAME = Chandra Sharma
+Emp No = 101
+Address = Chitwan, Nepal
+Phone No = 980927486
+Date of Birth = 1990
+Position = Principal
+Subject = incharge
+Date of Joining = 2000

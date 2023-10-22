@@ -1,0 +1,5 @@
+NAME = Gaurab Sapkota
+Roll No = 1
+Address = Kolpur, Nepal
+Phone No = 9809274
+Date of Birth = 2005

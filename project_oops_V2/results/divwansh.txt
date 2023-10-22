@@ -1,0 +1,14 @@
+Examination = 1st sem
+Student = divwansh
+Marks in all subjects :-
+Math = 100
+Science = 100
+Computer = 20
+English = 70
+Social = 70
+----------------------
+Total marks = 360
+Total Percentage = 72%
+Grade = B+
+
+

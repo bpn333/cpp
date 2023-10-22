@@ -1,0 +1,30 @@
+Examination = 3rd sem
+Student = gaurab
+Marks in all subjects :-
+Math = 100
+Science = 80
+Computer = 70
+English = 60
+Social = 80
+----------------------
+Total marks = 390
+Total Percentage = 78%
+Grade = B+
+
+
+
+
+Examination = 1st sem
+Student = gaurab
+Marks in all subjects :-
+Math = 0
+Science = 0
+Computer = 30
+English = 0
+Social = 0
+----------------------
+Total marks = 30
+Total Percentage = 6%
+Grade = FAIL
+
+

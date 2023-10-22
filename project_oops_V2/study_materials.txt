@@ -1,0 +1,9 @@
+study_material/computer/fundamentals.txt
+study_material/computer/concept_of_oops.txt
+study_material/computer/tips_and_tricks.txt
+study_material/math/probability.txt
+study_material/science/living_being.txt
+study_material/english/tenses.txt
+study_material/social/socialization.txt
+study_material/science/living.txt
+study_material/math/probability_2.txt
