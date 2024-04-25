@@ -27,7 +27,7 @@ class processes{
             cin>>p[i].burst_time;
             cout<<"Arrival Time : ";
             cin>>p[i].arrival_time;
-            p[i].pid = i;
+            p[i].pid = i+1;
         }
     }
     void arrange_ascending(){
